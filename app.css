@@ -63,12 +63,12 @@ button:hover, .button:hover {
 }
 
 .correct {
-  background-color: green;
+  background-color: var(--u-color);
   color: white;
 }
 
 .partial {
-  background-color: orange;
+  background-color: var(--g-color);
   color: white;
 }
 
@@ -78,7 +78,7 @@ button:hover, .button:hover {
 }
 
 .gameover {
-    background-color: #d90037 !important;
+    background-color: var(--r-color) !important;
     color: white !important;
 }
 
