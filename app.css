@@ -7,55 +7,6 @@
   --dark-color: #333437;
 }
 
-.t-bg
-{
-  background-color: var(--t-color);
-}
-
-.t-bg-important
-{
-  background-color: var(--t-color) !important;
-}
-.u-bg
-{
-  background-color: var(--u-color);
-}
-
-.u-bg-important
-{
-  background-color: var(--u-color) !important;
-}
-
-.r-bg
-{
-  background-color: var(--r-color);
-}
-
-.r-bg-important
-{
-  background-color: var(--r-color) !important;
-}
-
-.g-bg
-{
-  background-color: var(--g-color);
-}
-
-.g-bg-important
-{
-  background-color: var(--g-color) !important;
-}
-
-.o-bg
-{
-  background-color: var(--o-color);
-}
-
-.o-bg-important
-{
-  background-color: var(--o-color) !important;
-}
-
 body {
   font-family: Arial, sans-serif;
   text-align: center;
@@ -244,3 +195,52 @@ div#settings {
     color: black;
 }
 
+
+.t-bg
+{
+  background-color: var(--t-color);
+}
+
+.t-bg-important
+{
+  background-color: var(--t-color) !important;
+}
+.u-bg
+{
+  background-color: var(--u-color);
+}
+
+.u-bg-important
+{
+  background-color: var(--u-color) !important;
+}
+
+.r-bg
+{
+  background-color: var(--r-color);
+}
+
+.r-bg-important
+{
+  background-color: var(--r-color) !important;
+}
+
+.g-bg
+{
+  background-color: var(--g-color);
+}
+
+.g-bg-important
+{
+  background-color: var(--g-color) !important;
+}
+
+.o-bg
+{
+  background-color: var(--o-color);
+}
+
+.o-bg-important
+{
+  background-color: var(--o-color) !important;
+}
