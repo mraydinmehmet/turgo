@@ -1,9 +1,25 @@
+:root {
+  --t-color: #684fb7;
+  --u-color: #02ad83;
+  --r-color: #e6326f;
+  --g-color: #fe9b00;
+  --o-color: #684fb7;
+  --dark-color: #333437;
+  
+  --t-color-important: #684fb7 !important;
+  --u-color-important: #02ad83 !important;
+  --r-color-important: #e6326f !important;
+  --g-color-important: #fe9b00 !important;
+  --o-color-important: #684fb7 !important;
+  --dark-color-important: #333437 !important;
+}
+
 body {
   font-family: Arial, sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
-  background: #012056;
+  background: var(--dark-color);
 }
 
 #stage-selection, #game {
