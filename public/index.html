@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turgo - Çok Oyunculu Kelime Oyunu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% 100%;
+            animation: gradient 3s ease infinite;
+        }
+
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            min-height: 600px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .menu-screen {
+            text-align: center;
+        }
+
+        .menu-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            color: white;
+        }
+
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            max-width: 300px;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            padding: 15px 20px;
+            border-color: #667eea;
+            border-radius: 12px;
+
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        .game-screen {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+        @keyframes fadeIn {
+            padding: 15px 30px;
+            border-radius: 12px;
+        }
+            font-weight: 500;
+
+            margin: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 2rem;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: #333;
+        }
+
+        .teams-panel {
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border: 1px solid #dee2e6;
+        }
+
+        .team {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .team.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .team.eliminated {
+            background: #dc3545;
+            color: white;
+            opacity: 0.7;
+        }
+
+        .game-board {
+            text-align: center;
+        }
+
+        .stage-info {
+            background: #e9ecef;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .word-grid {
+            display: grid;
+            grid-template-rows: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin: 2rem 0;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .word-row {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .letter-box {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: white;
+        }
+
+        .letter-box.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .letter-box.partial {
+            background: #ffc107;
+            color: white;
+            border-color: #ffc107;
+        }
+
+        .letter-box.wrong {
+            background: #6c757d;
+            color: white;
+            border-color: #6c757d;
+        }
+
+        .controls {
+            margin-top: 2rem;
+        }
+
+        .guess-input {
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            width: 200px;
+        }
+
+        .answer-btn {
+            background: #28a745;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin: 0 0.5rem;
+        }
+
+        .answer-btn:hover {
+            background: #218838;
+        }
+
+        .answer-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .buzz-btn {
+            background: #dc3545;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin: 0 0.5rem;
+        }
+
+        .buzz-btn:hover {
+            background: #c82333;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border: 1px solid #dee2e6;
+            cursor: not-allowed;
+        }
+
+        .timer {
+            font-size: 2rem;
+            margin: 25px 0;
+            color: #dc3545;
+            margin: 1rem 0;
+        }
+
+        .puzzle-section {
+            gap: 8px;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 2px solid #ffeaa7;
+            width: 60px;
+            height: 60px;
+        .puzzle-question {
+            border-radius: 10px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+            background: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .letter-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+            animation: correctPulse 0.6s ease;
+        }
+
+        .letter-box.correct::before {
+            transform: translateX(100%);
+        }
+
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        .puzzle-letter {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: #333;
+            display: flex;
+            animation: partialShake 0.6s ease;
+        }
+
+        @keyframes partialShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+            background: white;
+        }
+            animation: wrongShake 0.6s ease;
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: translateX(3px); }
+
+        .puzzle-letter.revealed {
+            background: #f39c12;
+            padding: 15px;
+            gap: 15px;
+            margin: 25px 0;
+            border-radius: 10px;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+            flex: 1;
+            max-width: 350px;
+            font-size: 18px;
+            text-align: center;
+            text-transform: uppercase;
+            transform: translateX(5px);
+            display: none !important;
+        }
+            background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            margin: 1rem 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+            color: #667eea;
+            margin-bottom: 10px;
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            color: #6c757d;
+            font-size: 16px;
+        }
+
+        .message.error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 1px solid #f5c6cb;
+            animation: errorShake 0.5s ease;
+        }
+
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        @media (max-width: 768px) {
+            .game-info {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .menu-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .controls {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 1px solid #c3e6cb;
+            animation: successPulse 0.6s ease;
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .buzzer-container {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .buzzer-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+            border: 5px solid #fff;
+            box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3);
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .buzzer-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(220, 53, 69, 0.4);
+        }
+
+        .buzzer-btn:active {
+            transform: scale(0.95);
+        }
+
+        .buzzer-btn.disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .buzzer-btn.disabled:hover {
+            transform: none;
+        }
+
+        .puzzle-container {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border: 2px solid #ffc107;
+            text-align: center;
+        }
+
+        .puzzle-question {
+            font-size: 20px;
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 20px;
+        }
+
+        .puzzle-word {
+            font-family: 'Courier New', monospace;
+            font-size: 28px;
+            font-weight: bold;
+            color: #495057;
+            letter-spacing: 5px;
+            margin: 20px 0;
+        }
+
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #dc3545;
+            margin: 15px 0;
+            animation: timerPulse 1s infinite;
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .final-stage {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .final-timer {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #ffc107;
+        }
+
+        .word-meaning {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-style: italic;
+            color: #6c757d;
+            border-left: 4px solid #667eea;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .game-code {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .letter-box {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+
+            .buzzer-btn {
+                width: 100px;
+                height: 100px;
+                font-size: 20px;
+            }
+
+            .guess-input {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .guess-input input {
+                max-width: none;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-gamepad"></i> Turgo</h1>
+            <h1>🎯 TURGO</h1>
+            <p>Çok Oyunculu Kelime Tahmin Oyunu</p>
+        </div>
+
+        <!-- Ana Menü -->
+        <div id="menu-screen" class="menu-screen">
+            <div class="menu-buttons">
+                <button class="btn btn-primary" onclick="showCreateGame()">Oyun Oluştur</button>
+                <button class="btn btn-secondary" onclick="showJoinGame()">Oyuna Katıl</button>
+            </div>
+
+            <div id="create-game-form" class="hidden">
+                <h3>Yeni Oyun Oluştur</h3>
+                <button class="btn btn-primary" onclick="createGame()">Oyun Oluştur</button>
+            </div>
+
+            <div id="join-game-form" class="hidden">
+                <h3>Oyuna Katıl</h3>
+                <div class="form-group">
+                    <label for="gameId">Oyun Kodu:</label>
+                    <input type="text" id="gameId" placeholder="Oyun kodunu girin">
+                </div>
+                <div class="form-group">
+            <h2><i class="fas fa-users"></i> Çok Oyunculu Kelime Oyunu</h2>
+                    <input type="text" id="teamName" placeholder="Takım adınızı girin">
+                <button onclick="showCreateGame()">
+                    <i class="fas fa-plus"></i> Oyun Oluştur
+                </button>
+                <button onclick="showJoinGame()" class="btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i> Oyuna Katıl
+                </button>
+            </div>
+        </div>
+
+        <!-- Oyun Ekranı -->
+            <h2><i class="fas fa-sign-in-alt"></i> Oyuna Katıl</h2>
+            <div class="game-info">
+                <label for="gameCode"><i class="fas fa-key"></i> Oyun Kodu:</label>
+                <div class="teams-panel">
+                    <h3>Takımlar</h3>
+                    <div id="teams-list"></div>
+                <label for="joinTeamName"><i class="fas fa-users"></i> Takım Adınız:</label>
+                </div>
+
+                <!-- Oyun Tahtası -->
+                <button onclick="joinGame()" class="btn-success">
+                    <i class="fas fa-door-open"></i> Katıl
+                </button>
+                <button onclick="showMainMenu()" class="btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Geri
+                </button>
+                        <h3 id="stage-title">1. Etap</h3>
+                        <p id="stage-description">3 adet 4 harfli kelime</p>
+                        <div class="timer" id="timer">10</div>
+                    </div>
+
+            <h2><i class="fas fa-hourglass-half"></i> Bekleme Odası</h2>
+            <div id="gameCodeDisplay" class="game-code"></div>
+                        
+                        <div class="controls">
+                <h3><i class="fas fa-list"></i> Takımlar:</h3>
+                            <button id="answer-btn" class="answer-btn" onclick="makeGuess()">Cevapla</button>
+                            <button id="buzz-btn" class="buzz-btn" onclick="pressButton()">Buzzer</button>
+                        </div>
+                    </div>
+                <button id="startGameBtn" onclick="startGame()" style="display: none;" class="btn-success">
+                    <i class="fas fa-play"></i> Oyunu Başlat
+                </button>
+                <button onclick="leaveGame()" class="btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Oyundan Ayrıl
+                </button>
+                        <div class="puzzle-question" id="puzzle-question"></div>
+                        <div class="puzzle-letters" id="puzzle-letters"></div>
+                        <div class="controls">
+                            <input type="text" id="puzzle-input" class="guess-input" placeholder="Puzzle cevabı">
+                            <button id="puzzle-answer-btn" class="answer-btn" onclick="solvePuzzle()">Cevapla</button>
+                        </div>
+                <div class="stage-info">
+                    <i class="fas fa-layer-group"></i> Etap <span id="currentStage">1</span>
+                </div>
+                <div class="attempts-info">
+                    <i class="fas fa-heart"></i> Kalan Hak: <span id="attemptsLeft">5</span>
+                </div>
+                <div id="currentTeamInfo" class="attempts-info"></div>
+
+                <!-- Oyun Durumu -->
+            <!-- Buzzer Butonu -->
+            <div id="buzzerContainer" class="buzzer-container" style="display: none;">
+                <button id="buzzerBtn" class="buzzer-btn" onclick="pressBuzzer()">
+                    <i class="fas fa-bell"></i><br>BUZZER
+                </button>
+                <div style="margin-top: 10px; color: #6c757d;">
+                    İlk basan takım cevap verir!
+                </div>
+            </div>
+
+            <!-- Puzzle Ekranı -->
+            <div id="puzzleContainer" class="puzzle-container" style="display: none;">
+                <div class="puzzle-question" id="puzzleQuestion"></div>
+                <div class="puzzle-word" id="puzzleWord"></div>
+                <div class="timer" id="puzzleTimer"></div>
+            </div>
+
+            <!-- Final Etabı -->
+            <div id="finalContainer" class="final-stage" style="display: none;">
+                <h3><i class="fas fa-trophy"></i> FİNAL ETABI</h3>
+                <div class="final-timer" id="finalTimer">120</div>
+                <div>Kalan Süre</div>
+            </div>
+
+                <div class="teams-panel">
+                    <h3>Oyun Durumu</h3>
+                    <div id="game-status">
+                <div id="guessContainer" class="guess-input">
+                        <p>Etap: <strong id="current-stage">1</strong></p>
+                    <button onclick="makeGuess()" class="btn-success">
+                        <i class="fas fa-paper-plane"></i> Gönder
+                    </button>
+                    <button id="passBtn" onclick="passWord()" class="btn-warning" style="display: none;">
+                        <i class="fas fa-forward"></i> Pas
+                    </button>
+                        <p>Deneme: <strong id="attempts">0/5</strong></p>
+
+                <div id="wordMeaning" class="word-meaning" style="display: none;"></div>
+                <label for="teamName"><i class="fas fa-users"></i> Takım Adınız:</label>
+                </div>
+                <button onclick="createGame()" class="btn-success">
+                <h3><i class="fas fa-trophy"></i> Skor Tablosu:</h3>
+                </button>
+                <button onclick="showMainMenu()" class="btn-secondary">
+
+            <div class="form-group">
+                <button onclick="leaveGame()" class="btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Oyundan Ayrıl
+                </button>
+            </div>
+                    <i class="fas fa-arrow-left"></i> Geri
+                </button>
+        <!-- Oyun Bitişi -->
+        <div id="gameEndScreen" class="screen">
+            <h2><i class="fas fa-trophy"></i> Oyun Bitti!</h2>
+            <div id="winnerInfo" class="success"></div>
+            <div id="finalScores" class="teams-list"></div>
+            <div class="form-group">
+                <button onclick="showMainMenu()" class="btn-success">
+                    <i class="fas fa-home"></i> Ana Menüye Dön
+                </button>
+            </div>
+        </div>
+
+            <div id="messages"></div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        let gameState = null;
+        let myTeamId = null;
+        let currentTeamName = null;
+        let gameState = null;
+        let finalTimer = null;
+        let currentGameId = null;
+        let timer = null;
+        let timeLeft = 10;
+            currentGameId = null;
+            currentTeamId = null;
+            currentTeamName = null;
+
+        // Menü fonksiyonları
+        function showCreateGame() {
+            document.getElementById('create-game-form').classList.remove('hidden');
+            document.getElementById('join-game-form').classList.add('hidden');
+        }
+
+        function showJoinGame() {
+            document.getElementById('join-game-form').classList.remove('hidden');
+            document.getElementById('create-game-form').classList.add('hidden');
+        }
+
+        function createGame() {
+            socket.emit('createGame', {});
+        }
+                showMessage('Takım adı gerekli!', 'error');
+        function joinGame() {
+            const gameId = document.getElementById('gameId').value.trim();
+            const teamName = document.getElementById('teamName').value.trim();
+            
+            if (!gameId || !teamName) {
+                showMessage('Oyun kodu ve takım adı gerekli!', 'error');
+                return;
+            }
+                showMessage('Oyun kodu ve takım adı gerekli!', 'error');
+            showMessage('Oyun oluşturuluyor...', 'info');
+
+            
+            showMessage('Oyuna katılınıyor...', 'info');
+            socket.emit('joinGame', { gameId, teamName });
+        }
+
+        function startGame() {
+            showMessage('Oyun başlatılıyor...', 'info');
+            socket.emit('startGame', {});
+        }
+
+        function makeGuess() {
+            const guess = document.getElementById('guess-input').value.trim();
+            if (!guess) return;
+
+            socket.emit('makeGuess', { guess });
+            document.getElementById('guess-input').value = '';
+        }
+
+        function pressButton() {
+            socket.emit('pressButton');
+        }
+
+        function solvePuzzle() {
+            const answer = document.getElementById('puzzle-input').value.trim();
+            if (!answer) return;
+
+            socket.emit('solvePuzzle', { answer });
+            document.getElementById('puzzle-input').value = '';
+        }
+
+        function makeGuess() {
+            const guess = document.getElementById('guessInput').value.trim();
+            if (!guess) {
+                showMessage('Lütfen bir tahmin yazın!', 'error');
+                return;
+            }
+            
+            socket.emit('makeGuess', { guess });
+            document.getElementById('guessInput').value = '';
+        }
+
+        function pressBuzzer() {
+            socket.emit('pressBuzzer');
+        }
+
+        function passWord() {
+            socket.emit('passWord');
+        }
+
+        function leaveGame() {
+            if (confirm('Oyundan ayrılmak istediğinizden emin misiniz?')) {
+                socket.disconnect();
+                socket.connect();
+                showMainMenu();
+                showMessage('Oyundan ayrıldınız.', 'info');
+            }
+        }
+
+        // Socket olayları
+        socket.on('gameCreated', (data) => {
+            currentGameId = data.gameId;
+            document.getElementById('gameId').value = data.gameId;
+            currentTeamName = data.teamName;
+            document.getElementById('gameCodeDisplay').innerHTML = `<i class="fas fa-key"></i> Oyun Kodu: ${data.gameCode}`;
+            
+            // Otomatik olarak kendi oyununa katıl
+            const teamName = prompt('Takım adınızı girin:');
+            if (teamName) {
+                socket.emit('joinGame', { gameId: data.gameId, teamName });
+            }
+        });
+
+            showMessage('Oyun başarıyla oluşturuldu!', 'success');
+            myTeamId = data.teamId;
+            currentGameId = data.gameId;
+            
+            document.getElementById('menu-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'block';
+            currentTeamName = data.teamName;
+            document.getElementById('gameCodeDisplay').innerHTML = `<i class="fas fa-key"></i> Oyun Kodu: ${data.gameCode}`;
+            
+            showMessage('Oyuna başarıyla katıldınız!', 'success');
+        });
+
+        socket.on('gameUpdate', (data) => {
+            gameState = data;
+            gameState = data;
+            updateGameDisplay();
+        });
+
+        socket.on('gameStarted', (data) => {
+            gameState = data;
+            updateGameDisplay();
+            showMessage('Oyun başladı!', 'success');
+            startTimer();
+        });
+
+        socket.on('guessResult', (data) => {
+            if (data.correct) {
+                showMessage(`Doğru! +${data.score} puan`, 'success');
+            } else {
+                showMessage('Yanlış tahmin!', 'error');
+            }
+            
+            gameState = data.gameState;
+            updateGameDisplay();
+        });
+
+        socket.on('buttonPressed', (data) => {
+            const team = gameState.teams.find(t => t.id === data.teamId);
+            showMessage(`${team.name} buzzera bastı! (${data.order}. sırada)`, 'info');
+            
+            gameState = data.gameState;
+            updateGameDisplay();
+        });
+
+        socket.on('error', (data) => {
+            showMessage(data.message, 'error');
+        });
+
+        // Oyun ekranını güncelle
+        function updateGameScreen(data) {
+            // Etap bilgisi
+            document.getElementById('currentStage').textContent = data.currentStage;
+            document.getElementById('attemptsLeft').textContent = data.maxAttempts - data.attempts;
+            
+            // Aktif takım bilgisi
+            const activeTeam = data.activeTeam;
+            const currentTeamInfo = document.getElementById('currentTeamInfo');
+            if (activeTeam) {
+                currentTeamInfo.innerHTML = `<i class="fas fa-user"></i> Sıra: ${activeTeam.name}`;
+                currentTeamInfo.style.color = activeTeam.id === currentTeamId ? '#28a745' : '#6c757d';
+            }
+
+            // Buzzer kontrolü
+            const buzzerContainer = document.getElementById('buzzerContainer');
+            const buzzerBtn = document.getElementById('buzzerBtn');
+            
+            if (data.gameState === 'puzzle' || (data.currentStage >= 2 && !activeTeam)) {
+                buzzerContainer.style.display = 'block';
+                
+                const team = data.teams.find(t => t.id === currentTeamId);
+                if (team && team.buzzerPressed) {
+                    buzzerBtn.classList.add('disabled');
+                    buzzerBtn.innerHTML = '<i class="fas fa-check"></i><br>BASILDI';
+                } else {
+                    buzzerBtn.classList.remove('disabled');
+                    buzzerBtn.innerHTML = '<i class="fas fa-bell"></i><br>BUZZER';
+                }
+            } else {
+                buzzerContainer.style.display = 'none';
+            }
+
+            // Puzzle ekranı
+            const puzzleContainer = document.getElementById('puzzleContainer');
+            if (data.gameState === 'puzzle' && data.currentPuzzle) {
+                puzzleContainer.style.display = 'block';
+                document.getElementById('puzzleQuestion').textContent = data.currentPuzzle.soru;
+                
+                // Harfleri göster
+                let puzzleWord = '';
+                for (let i = 0; i < data.currentPuzzle.cevap.length; i++) {
+                    if (i < data.puzzleRevealedLetters) {
+                        puzzleWord += data.currentPuzzle.cevap[i].toUpperCase();
+                    } else {
+                        puzzleWord += '_';
+                    }
+                    puzzleWord += ' ';
+                }
+                document.getElementById('puzzleWord').textContent = puzzleWord;
+            } else {
+                puzzleContainer.style.display = 'none';
+            }
+
+            // Final etabı
+            const finalContainer = document.getElementById('finalContainer');
+            if (data.currentStage === 4) {
+                finalContainer.style.display = 'block';
+                // Final timer burada başlatılacak
+            } else {
+                finalContainer.style.display = 'none';
+            }
+
+            // Kelime ızgarası
+            if (data.currentWord) {
+                updateWordGrid(data.currentWord, data.guesses);
+            }
+
+            // Tahmin input kontrolü
+            const guessContainer = document.getElementById('guessContainer');
+            const passBtn = document.getElementById('passBtn');
+            
+            if (activeTeam && activeTeam.id === currentTeamId) {
+                guessContainer.style.display = 'flex';
+                if (data.currentStage === 4) {
+                    passBtn.style.display = 'block';
+                } else {
+                    passBtn.style.display = 'none';
+                }
+            } else {
+                guessContainer.style.display = 'none';
+            }
+        }
+
+        // Kelime ızgarasını güncelle
+        function updateWordGrid(word, guesses) {
+            const grid = document.getElementById('wordGrid');
+            grid.innerHTML = '';
+            
+            // 5 satır oluştur
+            for (let row = 0; row < 5; row++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'word-row';
+                
+                for (let col = 0; col < word.kelime.length; col++) {
+                    const letterBox = document.createElement('div');
+                    letterBox.className = 'letter-box';
+                    
+                    if (guesses[row]) {
+                        const guess = guesses[row].guess;
+                        const letter = guess[col] || '';
+                        letterBox.textContent = letter.toUpperCase();
+                        
+                        // Renk kontrolü
+                        if (letter.toLowerCase() === word.kelime[col].toLowerCase()) {
+                            letterBox.classList.add('correct');
+                        } else if (word.kelime.toLowerCase().includes(letter.toLowerCase())) {
+                            letterBox.classList.add('partial');
+                        } else {
+                            letterBox.classList.add('wrong');
+                        }
+                    }
+                    
+                    rowDiv.appendChild(letterBox);
+                }
+                
+                grid.appendChild(rowDiv);
+            }
+        }
+
+        // Oyun görünümü güncelleme
+        function updateGameDisplay() {
+            if (!gameState) return;
+
+            // Takımları güncelle
+            updateTeamsList();
+            
+            // Oyun durumunu güncelle
+                if (team.isEliminated) {
+                    teamDiv.style.opacity = '0.5';
+                }
+            document.getElementById('current-stage').textContent = gameState.currentStage;
+                    <span class="team-name">
+                        <i class="fas fa-users"></i> ${team.name}
+                        ${team.isActive ? '<i class="fas fa-star" style="color: #ffc107; margin-left: 5px;"></i>' : ''}
+                        ${team.isEliminated ? '<i class="fas fa-times" style="color: #dc3545; margin-left: 5px;"></i>' : ''}
+                    </span>
+                    <span class="team-score">
+                        <i class="fas fa-trophy"></i> ${team.score} puan
+                    </span>
+            
+            // Etap bilgilerini güncelle
+            updateStageInfo();
+            
+            // Kelime ızgarasını güncelle
+            updateWordGrid();
+            
+            // Kontrolleri güncelle
+            updateControls();
+            
+            // Puanlara göre sırala
+            const sortedTeams = [...teams].sort((a, b) => b.score - a.score);
+            
+            sortedTeams.forEach((team, index) => {
+                const teamDiv = document.createElement('div');
+                teamDiv.className = 'team-item';
+                if (team.isEliminated) {
+                    teamDiv.style.opacity = '0.5';
+                }
+                
+                let rankIcon = '';
+                if (index === 0) rankIcon = '<i class="fas fa-crown" style="color: #ffc107;"></i>';
+                else if (index === 1) rankIcon = '<i class="fas fa-medal" style="color: #c0c0c0;"></i>';
+                else if (index === 2) rankIcon = '<i class="fas fa-medal" style="color: #cd7f32;"></i>';
+                else rankIcon = `<span style="color: #6c757d;">${index + 1}.</span>`;
+                
+                teamDiv.innerHTML = `
+                    <span class="team-name">
+                        ${rankIcon} ${team.name}
+                        ${team.isActive ? '<i class="fas fa-star" style="color: #ffc107; margin-left: 5px;"></i>' : ''}
+                        ${team.isEliminated ? '<i class="fas fa-times" style="color: #dc3545; margin-left: 5px;"></i>' : ''}
+                    </span>
+                    <span class="team-score">
+                        <i class="fas fa-trophy"></i> ${team.score.toLocaleString()} puan
+                    </span>
+                `;
+                gameTeamsList.appendChild(teamDiv);
+            });
+        }
+
+        // Oyun bitişini göster
+        function showGameEnd(data) {
+            showScreen('gameEndScreen');
+            
+            const winner = data.teams.reduce((max, team) => 
+                team.score > max.score ? team : max
+            );
+            
+            document.getElementById('winnerInfo').innerHTML = `
+                <h3><i class="fas fa-trophy"></i> Kazanan: ${winner.name}</h3>
+                <p>Final Puanı: ${winner.score.toLocaleString()} puan</p>
+            `;
+            
+            updateFinalScores(data.teams);
+        }
+
+        // Final skorları
+        function updateFinalScores(teams) {
+            const finalScores = document.getElementById('finalScores');
+            finalScores.innerHTML = '<h3><i class="fas fa-list-ol"></i> Final Sıralaması:</h3>';
+            
+            const sortedTeams = [...teams].sort((a, b) => b.score - a.score);
+            
+            sortedTeams.forEach((team, index) => {
+                const teamDiv = document.createElement('div');
+                teamDiv.className = 'team-item';
+                
+                let rankIcon = '';
+                if (index === 0) rankIcon = '<i class="fas fa-crown" style="color: #ffc107;"></i>';
+                else if (index === 1) rankIcon = '<i class="fas fa-medal" style="color: #c0c0c0;"></i>';
+                else if (index === 2) rankIcon = '<i class="fas fa-medal" style="color: #cd7f32;"></i>';
+                else rankIcon = `<span style="color: #6c757d;">${index + 1}.</span>`;
+                
+                teamDiv.innerHTML = `
+                    <span class="team-name">
+                        ${rankIcon} ${team.name}
+                    </span>
+                    <span class="team-score">
+                        <i class="fas fa-trophy"></i> ${team.score.toLocaleString()} puan
+                    </span>
+                `;
+                finalScores.appendChild(teamDiv);
+            });
+        }
+
+        // Mesaj gösterme
+        function showMessage(message, type = 'info') {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type;
+            
+            let icon = '';
+            switch(type) {
+                case 'success': icon = '<i class="fas fa-check-circle"></i>'; break;
+                case 'error': icon = '<i class="fas fa-exclamation-circle"></i>'; break;
+                case 'info': icon = '<i class="fas fa-info-circle"></i>'; break;
+            }
+            
+            messageDiv.innerHTML = `${icon} ${message}`;
+            messagesDiv.appendChild(messageDiv);
+            
+            // 5 saniye sonra mesajı kaldır
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.parentNode.removeChild(messageDiv);
+                }
+            }, 5000);
+        }
+
+        // Klavye olayları
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const activeScreen = document.querySelector('.screen.active');
+                
+                if (activeScreen.id === 'createGame') {
+                    createGame();
+                } else if (activeScreen.id === 'joinGame') {
+                    joinGame();
+                } else if (activeScreen.id === 'gameScreen') {
+                    makeGuess();
+                }
+            }
+        });
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', () => {
+            // Otomatik odaklanma
+            const teamNameInput = document.getElementById('teamName');
+            if (teamNameInput) {
+                teamNameInput.focus();
+            }
+        });
+
+        // Bağlantı durumu
+        socket.on('connect', () => {
+            console.log('Sunucuya bağlandı');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Sunucu bağlantısı kesildi');
+            showMessage('Sunucu bağlantısı kesildi. Yeniden bağlanılıyor...', 'error');
+        });
+
+        socket.on('reconnect', () => {
+            console.log('Sunucuya yeniden bağlandı');
+            showMessage('Sunucuya yeniden bağlandı!', 'success');
+        });
+    </script>
+</body>
+</html>
+
+            // Başlat butonunu göster/gizle
+            const startBtn = document.getElementById('start-game-btn');
+            if (gameState.gameState === 'waiting' && gameState.teams.length >= 3) {
+                startBtn.classList.remove('hidden');
+            } else {
+                startBtn.classList.add('hidden');
+            }
+        }
+
+        function updateTeamsList() {
+            const teamsList = document.getElementById('teams-list');
+            teamsList.innerHTML = '';
+            
+            gameState.teams.forEach(team => {
+                const teamDiv = document.createElement('div');
+                teamDiv.className = 'team';
+                
+                if (team.isActive) teamDiv.classList.add('active');
+                if (team.eliminated) teamDiv.classList.add('eliminated');
+                
+                teamDiv.innerHTML = `
+                    <span>${team.name} ${team.id === myTeamId ? '(Sen)' : ''}</span>
+                    <span>${team.score} puan</span>
+                `;
+                
+                teamsList.appendChild(teamDiv);
+            });
+        }
+
+        function updateStageInfo() {
+            const stageTitle = document.getElementById('stage-title');
+            const stageDescription = document.getElementById('stage-description');
+            
+            switch (gameState.currentStage) {
+                case 1:
+                    stageTitle.textContent = '1. Etap';
+                    stageDescription.textContent = '3 adet 4 harfli kelime + Puzzle';
+                    break;
+                case 2:
+                    stageTitle.textContent = '2. Etap';
+                    stageDescription.textContent = '4 adet 5 harfli kelime + Puzzle';
+                    break;
+                case 3:
+                    stageTitle.textContent = '3. Etap';
+                    stageDescription.textContent = '2x5 harfli + Puzzle + 2x6 harfli + Puzzle';
+                    break;
+                case 4:
+                    stageTitle.textContent = '4. Etap (Final)';
+                    stageDescription.textContent = '120 saniye - 4,5,6,7 harfli kelimeler';
+                    break;
+            }
+        }
+
+        function updateWordGrid() {
+            const wordGrid = document.getElementById('word-grid');
+            wordGrid.innerHTML = '';
+            
+            if (!gameState.currentWord) return;
+            
+            const wordLength = gameState.currentWord.kelime.length;
+            
+            // 5 satır oluştur
+            for (let row = 0; row < 5; row++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'word-row';
+                
+                for (let col = 0; col < wordLength; col++) {
+                    const letterBox = document.createElement('div');
+                    letterBox.className = 'letter-box';
+                    rowDiv.appendChild(letterBox);
+                }
+                
+                wordGrid.appendChild(rowDiv);
+            }
+        }
+
+        function updateControls() {
+            const answerBtn = document.getElementById('answer-btn');
+            const buzzBtn = document.getElementById('buzz-btn');
+            const guessInput = document.getElementById('guess-input');
+            
+            const isMyTurn = gameState.activeTeam && gameState.activeTeam.id === myTeamId;
+            const canBuzz = gameState.currentStage >= 2 && !gameState.teams.find(t => t.id === myTeamId)?.buttonPressed;
+            
+            answerBtn.disabled = !isMyTurn;
+            buzzBtn.disabled = !canBuzz;
+            guessInput.disabled = !isMyTurn;
+        }
+
+        function startTimer() {
+            if (timer) clearInterval(timer);
+            
+            timeLeft = gameState.currentStage === 4 ? 120 : 10;
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    // Süre doldu
+                }
+            }, 1000);
+        }
+
+        function showMessage(message, type) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+            
+            messagesDiv.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+            if (data.gameState === 'waiting') {
+                // Bekleme odasında
+                const startBtn = document.getElementById('startGameBtn');
+                if (data.canStartGame) {
+                    startBtn.style.display = 'block';
+                } else {
+                    startBtn.style.display = 'none';
+                }
+            } else if (data.gameState === 'playing' || data.gameState === 'puzzle') {
+                // Oyun ekranında
+                showScreen('gameScreen');
+                updateGameScreen(data);
+            } else if (data.gameState === 'finished') {
+                // Oyun bitti
+                showGameEnd(data);
+            }
+        });
+
+        document.getElementById('puzzle-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                solvePuzzle();
+            showMessage('Oyun başladı! İyi şanslar!', 'success');
+        });
+
+        socket.on('guessResult', (data) => {
+            if (data.correct) {
+                showMessage(data.message, 'success');
+                if (data.word && data.word.anlam) {
+                    document.getElementById('wordMeaning').innerHTML = 
+                        `<i class="fas fa-info-circle"></i> <strong>${data.word.kelime.toUpperCase()}:</strong> ${data.word.anlam}`;
+                    document.getElementById('wordMeaning').style.display = 'block';
+                }
+            } else {
+                showMessage(data.message, 'error');
+            }
+        });
+
+        socket.on('buzzerResult', (data) => {
+            if (data.success) {
+                showMessage(data.message, 'success');
+            } else {
+                showMessage(data.message, 'error');
+            }
+        });
+    </script>
+</body>
+</html>
